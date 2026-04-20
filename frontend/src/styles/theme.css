@@ -1,0 +1,56 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --color-primary: #8b7355;
+  --color-secondary: #f4f1ea;
+  --color-tertiary: #ffffff;
+
+  --color-primary-hover: #735f46;
+  --color-primary-soft: #a08b71;
+  --color-secondary-hover: #e6e0d4;
+  --color-secondary-strong: #d9ceb9;
+  --color-tertiary-hover: #f8f5ee;
+  --color-tertiary-strong: #efe8dc;
+}
+
+.dark {
+  --color-primary: #f4f1ea;
+  --color-secondary: #8b7355;
+  --color-tertiary: #ffffff;
+
+  --color-primary-hover: #ffffff;
+  --color-primary-soft: #e6e0d4;
+  --color-secondary-hover: #a08b71;
+  --color-secondary-strong: #735f46;
+  --color-tertiary-hover: #f8f5ee;
+  --color-tertiary-strong: #efe8dc;
+}
+
+@theme inline {
+  --color-background: var(--color-secondary);
+  --color-foreground: var(--color-primary);
+  --color-primary: var(--color-primary);
+  --color-primary-foreground: var(--color-tertiary);
+  --color-muted: var(--color-tertiary-hover);
+  --color-muted-foreground: var(--color-primary-soft);
+  --color-border: var(--color-secondary-strong);
+  --color-input-background: var(--color-tertiary);
+  --color-surface: var(--color-tertiary);
+  --color-surface-foreground: var(--color-primary);
+  --color-destructive: var(--color-primary-hover);
+  --color-destructive-foreground: var(--color-tertiary);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply bg-background text-foreground;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
