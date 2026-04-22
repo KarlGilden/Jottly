@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useCreateAudio } from "../api/mutations/useCreateAudio";
 import { useCreateSavedWord } from "../api/mutations/useCreateSavedWord";
@@ -19,7 +19,7 @@ interface EntryDetailPageProps {
 
 export function EntryDetailPage({ selectedLanguage }: EntryDetailPageProps) {
 	const { createAlert } = useAlert();
-
+	const nav = useNavigate();
 	const params = useParams();
 	const entryId = params.id ? Number(params.id) : null;
 	const { data: entry, error, isLoading } = useEntry(entryId, selectedLanguage);
@@ -31,6 +31,8 @@ export function EntryDetailPage({ selectedLanguage }: EntryDetailPageProps) {
 	const [reviewMode, setReviewMode] = useState<ReviewMode>("text");
 	const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
 	const [sentenceVisible, setSentenceVisible] = useState(true);
+	const [lingqLessonLink, setLinqLessonLink] = useState("");
+
 	const touchStartXRef = useRef<number | null>(null);
 
 	const activeTranslation = useMemo(() => {
@@ -115,12 +117,16 @@ export function EntryDetailPage({ selectedLanguage }: EntryDetailPageProps) {
 				tags: [],
 			},
 			{
-				onSuccess: () =>
+				onSuccess: (data) => {
 					createAlert({
 						title: "Success",
 						message: "Imported to LingQ",
 						type: "success",
-					}),
+					});
+
+					setLinqLessonLink(data.lessonURL);
+				},
+
 				onError: () =>
 					createAlert({
 						title: "Error",
@@ -153,13 +159,24 @@ export function EntryDetailPage({ selectedLanguage }: EntryDetailPageProps) {
 					<p className="text-lg w-32 shrink-0 text-sm text-muted-foreground sm:w-40">
 						{new Date(entry.createdAt).toLocaleDateString()}
 					</p>
-					<button
-						type="button"
-						className="rounded-md border border-border px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-						onClick={() => handleExport(activeTranslation ?? undefined)}
-					>
-						Export to LingQ
-					</button>
+					{lingqLessonLink ? (
+						<a href={lingqLessonLink} target="_blank">
+							<button
+								type="button"
+								className="rounded-md border border-border px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+							>
+								Go to LingQ lesson!
+							</button>
+						</a>
+					) : (
+						<button
+							type="button"
+							className="rounded-md border border-border px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+							onClick={() => handleExport(activeTranslation ?? undefined)}
+						>
+							Export to LingQ
+						</button>
+					)}
 				</div>
 				<div className="inline-flex w-full rounded-md bg-muted p-1 sm:w-auto">
 					<button

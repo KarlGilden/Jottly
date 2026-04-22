@@ -25,13 +25,7 @@ const AlertContext = createContext<AlertContextType>({
 });
 
 export const AlertProvider = ({ children }: Props) => {
-	const [alerts, setAlerts] = useState<Alert[]>([
-		{
-			type: "success",
-			title: "Success",
-			message: "Exported your entry to LingQ",
-		},
-	]);
+	const [alerts, setAlerts] = useState<Alert[]>([]);
 
 	const createAlert = (alert: Alert) => {
 		setAlerts([...alerts, alert]);
