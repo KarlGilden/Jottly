@@ -1,21 +1,36 @@
-import { FastifyInstance } from "fastify";
+import type { FastifyInstance } from "fastify";
+
+import { createLingqLessonSchema } from "../schemas/lingq.schema.js";
+import { ApiKeyRepository } from "../repositories/api-key.repository.js";
+import { UserRepository } from "../repositories/user.repository.js";
 import { LingqService } from "../services/lingq.service.js";
+import { UserService } from "../services/user.service.js";
 import { LingqImportInput } from "../types/linqq.types.js";
 
 export async function exportRoutes(fastify: FastifyInstance): Promise<void> {
-	const lingqService = new LingqService();
+	const userService = new UserService(new UserRepository());
+	const lingqService = new LingqService(new ApiKeyRepository());
 
-	fastify.post("/lingq", async (req, res) => {
-		const lessonData = req.body as LingqImportInput;
+	fastify.post("/lingq", async (request, reply) => {
+		const clerkUserId = request.auth?.userId;
 
-		if (!lessonData) return res.status(400).send();
+		if (!clerkUserId) {
+			return reply.code(401).send({ message: "Unauthorized" });
+		}
 
-		const lessonOutput = await lingqService.importLesson(
+		const user = await userService.getUserByClerkId(clerkUserId);
+
+		if (!user) {
+			return reply.code(404).send({ message: "User not found" });
+		}
+
+		const lessonData = request.body as LingqImportInput;
+		const lessonOutput = await lingqService.createLesson(
+			user.id,
 			lessonData,
-			"2d71e317a43665206017141dd05534d88df6b79d",
 			lessonData.language,
 		);
 
-		return res.send(lessonOutput);
+		return reply.send(lessonOutput);
 	});
 }

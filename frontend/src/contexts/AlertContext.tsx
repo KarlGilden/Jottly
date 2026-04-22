@@ -5,7 +5,7 @@ import {
 	useContext,
 	useState,
 } from "react";
-
+import { IoClose } from "react-icons/io5";
 interface Alert {
 	type: "success" | "error";
 	title: string;
@@ -25,7 +25,13 @@ const AlertContext = createContext<AlertContextType>({
 });
 
 export const AlertProvider = ({ children }: Props) => {
-	const [alerts, setAlerts] = useState<Alert[]>([]);
+	const [alerts, setAlerts] = useState<Alert[]>([
+		{
+			type: "success",
+			title: "Success",
+			message: "Exported your entry to LingQ",
+		},
+	]);
 
 	const createAlert = (alert: Alert) => {
 		setAlerts([...alerts, alert]);
@@ -47,10 +53,20 @@ export const AlertProvider = ({ children }: Props) => {
 				{alerts.map((alert) => {
 					return (
 						<div
-							className={`${alert.type === "success" ? "border-green-500" : "border-red-500"} border-t-2 border-solid w-[200px] h-[50px] bg-white`}
+							className={`${alert.type === "success" ? "border-green-500" : "border-red-500"} flex border-t-5 border-solid w-[400px] bg-white  rounded-md`}
 						>
-							<h1>{alert?.title}</h1>
-							<p>{alert?.message}</p>
+							<div className="w-full py-2 px-4">
+								<h1 className="font-semibold">{alert?.title}</h1>
+								<p>{alert?.message}</p>
+							</div>
+							<div className="py-2 px-4 border-l flex justify-center items-center">
+								<IoClose
+									className="text-2xl cursor-pointer"
+									onClick={() =>
+										setAlerts((prev) => prev.filter((x) => x !== alert))
+									}
+								/>
+							</div>
 						</div>
 					);
 				})}

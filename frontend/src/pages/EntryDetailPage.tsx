@@ -8,6 +8,8 @@ import { ErrorState } from "../components/ErrorState";
 import { LoadingState } from "../components/LoadingState";
 import { useExportToLingq } from "../api/mutations/useExportToLingq";
 import { useAlert } from "../contexts/AlertContext";
+import { MdShortText } from "react-icons/md";
+import { BsCardText } from "react-icons/bs";
 
 type ReviewMode = "text" | "sentence";
 
@@ -104,13 +106,13 @@ export function EntryDetailPage({ selectedLanguage }: EntryDetailPageProps) {
 
 		exportToLingq(
 			{
+				text: data.content ?? "",
+				title:
+					entry.title + " " + new Date(entry.createdAt).toLocaleDateString(),
 				status: "private",
 				save: true,
 				language: data.language,
-				text: data.content ?? "",
 				tags: [],
-				title:
-					entry.title + " " + new Date(entry.createdAt).toLocaleDateString(),
 			},
 			{
 				onSuccess: () =>
@@ -123,7 +125,7 @@ export function EntryDetailPage({ selectedLanguage }: EntryDetailPageProps) {
 					createAlert({
 						title: "Error",
 						message: "Something went wrong",
-						type: "success",
+						type: "error",
 					}),
 			},
 		);
@@ -142,16 +144,20 @@ export function EntryDetailPage({ selectedLanguage }: EntryDetailPageProps) {
 	}
 
 	return (
-		<div className="mx-auto max-w-4xl space-y-8 pb-40">
-			<div className="flex flex-col gap-3 border-b border-border pb-4 sm:flex-row sm:items-end sm:justify-between">
-				<div className="flex min-w-0 flex-1 items-center gap-4">
-					<h1 className="min-w-0 flex-1 truncate text-foreground">
+		<div className="mx-auto max-w-4xl space-y-5 pb-40">
+			<div className="flex flex-col gap-1 pb-2 sm:flex-row sm:items-end sm:justify-between">
+				<div className="flex min-w-0 items-center gap-4">
+					<h1 className="font-semibold text-xl min-w-0 truncate text-foreground">
 						{entry.title}
 					</h1>
-					<p className="w-32 shrink-0 text-right text-sm text-muted-foreground sm:w-40">
+					<p className="text-lg w-32 shrink-0 text-sm text-muted-foreground sm:w-40">
 						{new Date(entry.createdAt).toLocaleDateString()}
 					</p>
-					<button onClick={() => handleExport(activeTranslation ?? undefined)}>
+					<button
+						type="button"
+						className="rounded-md border border-border px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+						onClick={() => handleExport(activeTranslation ?? undefined)}
+					>
 						Export to LingQ
 					</button>
 				</div>
@@ -166,7 +172,7 @@ export function EntryDetailPage({ selectedLanguage }: EntryDetailPageProps) {
 						].join(" ")}
 						onClick={() => setReviewMode("text")}
 					>
-						Text Mode
+						<BsCardText className="text-xl" />
 					</button>
 					<button
 						type="button"
@@ -178,7 +184,7 @@ export function EntryDetailPage({ selectedLanguage }: EntryDetailPageProps) {
 						].join(" ")}
 						onClick={() => setReviewMode("sentence")}
 					>
-						Sentence Mode
+						<MdShortText className="text-2xl" />
 					</button>
 				</div>
 			</div>

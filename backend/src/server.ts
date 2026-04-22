@@ -14,6 +14,7 @@ import { savedWordRoutes } from "./routes/saved-word.routes.js";
 import { translationRoutes } from "./routes/translation.routes.js";
 import { webhookRoutes } from "./routes/webhook.routes.js";
 import { exportRoutes } from "./routes/export.routes.js";
+import { lingqRoutes } from "./routes/lingq.routes.js";
 
 await initializeDatabase();
 
@@ -51,6 +52,7 @@ await app.register(translationRoutes);
 await app.register(audioRoutes);
 await app.register(savedWordRoutes);
 await app.register(exportRoutes, { prefix: "/export" });
+await app.register(lingqRoutes, { prefix: "/api/lingq" });
 
 const port = Number(process.env.PORT ?? 3001);
 const host = process.env.HOST ?? "0.0.0.0";

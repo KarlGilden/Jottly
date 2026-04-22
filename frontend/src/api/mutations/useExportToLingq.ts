@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useFetch } from "../useFetch";
 
 export interface LingqImportInput {
@@ -43,7 +43,6 @@ export interface LingqImportOutput {
 
 export function useExportToLingq() {
 	const fetch = useFetch();
-	const queryClient = useQueryClient();
 
 	return useMutation<LingqImportOutput, Error, LingqImportInput>({
 		mutationFn: (data) =>
