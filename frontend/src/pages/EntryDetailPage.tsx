@@ -10,19 +10,19 @@ import { useExportToLingq } from "../api/mutations/useExportToLingq";
 import { useAlert } from "../contexts/AlertContext";
 import { MdShortText } from "react-icons/md";
 import { BsCardText } from "react-icons/bs";
+import { useLanguage } from "../contexts/LanguageContext";
 
 type ReviewMode = "text" | "sentence";
 
-interface EntryDetailPageProps {
-	selectedLanguage: string;
-}
-
-export function EntryDetailPage({ selectedLanguage }: EntryDetailPageProps) {
+export function EntryDetailPage() {
 	const { createAlert } = useAlert();
+	const { language } = useLanguage();
 	const nav = useNavigate();
 	const params = useParams();
+
 	const entryId = params.id ? Number(params.id) : null;
-	const { data: entry, error, isLoading } = useEntry(entryId, selectedLanguage);
+
+	const { data: entry, error, isLoading } = useEntry(entryId, language);
 
 	const createAudioMutation = useCreateAudio();
 	const createSavedWordMutation = useCreateSavedWord();
@@ -42,12 +42,12 @@ export function EntryDetailPage({ selectedLanguage }: EntryDetailPageProps) {
 
 		return (
 			entry.translations.find(
-				(translation) => translation.language === selectedLanguage,
+				(translation) => translation.language === language,
 			) ??
 			entry.translations[0] ??
 			null
 		);
-	}, [entry, selectedLanguage]);
+	}, [entry, language]);
 
 	const translatedSentences = useMemo(
 		() =>

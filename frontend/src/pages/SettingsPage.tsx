@@ -1,15 +1,14 @@
 import { useState } from "react";
 
 import { ApiKeyStatus, useLingqStatus, useSetLingqApiKey } from "../api/lingq";
+import { useTheme } from "../contexts/ThemeContext";
 
-interface SettingsPageProps {
-	themeMode: "light" | "dark";
-	onThemeChange: (themeMode: "light" | "dark") => void;
-}
+export function SettingsPage() {
+	const { themeMode, setThemeMode } = useTheme();
 
-export function SettingsPage({ themeMode, onThemeChange }: SettingsPageProps) {
 	const [apiKey, setApiKey] = useState("");
 	const [showApiKey, setShowApiKey] = useState(false);
+
 	const { data: lingqStatus, isLoading: isLingqStatusLoading } =
 		useLingqStatus();
 	const setLingqApiKeyMutation = useSetLingqApiKey();
@@ -68,7 +67,7 @@ export function SettingsPage({ themeMode, onThemeChange }: SettingsPageProps) {
 								? "bg-primary text-primary-foreground"
 								: "text-muted-foreground hover:text-foreground",
 						].join(" ")}
-						onClick={() => onThemeChange("light")}
+						onClick={() => setThemeMode("light")}
 					>
 						Light mode
 					</button>
@@ -80,7 +79,7 @@ export function SettingsPage({ themeMode, onThemeChange }: SettingsPageProps) {
 								? "bg-primary text-primary-foreground"
 								: "text-muted-foreground hover:text-foreground",
 						].join(" ")}
-						onClick={() => onThemeChange("dark")}
+						onClick={() => setThemeMode("dark")}
 					>
 						Dark mode
 					</button>

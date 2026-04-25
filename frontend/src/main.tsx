@@ -7,6 +7,8 @@ import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
 import "./styles/index.css";
 import { AlertProvider } from "./contexts/AlertContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
+import { LanguageProvider } from "./contexts/LanguageContext";
 
 const queryClient = new QueryClient();
 const clerkPublishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -19,11 +21,15 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
 		<ClerkProvider publishableKey={clerkPublishableKey}>
 			<QueryClientProvider client={queryClient}>
-				<AlertProvider>
-					<BrowserRouter>
-						<App />
-					</BrowserRouter>
-				</AlertProvider>
+				<LanguageProvider>
+					<AlertProvider>
+						<BrowserRouter>
+							<ThemeProvider>
+								<App />
+							</ThemeProvider>
+						</BrowserRouter>
+					</AlertProvider>
+				</LanguageProvider>
 			</QueryClientProvider>
 		</ClerkProvider>
 	</React.StrictMode>,

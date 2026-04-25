@@ -6,43 +6,57 @@ import { useUpdateEntry } from "../api/mutations/useUpdateEntry";
 import { useEntries } from "../api/queries/useEntries";
 import { ErrorState } from "../components/ErrorState";
 import { LoadingState } from "../components/LoadingState";
+import { useLanguage } from "../contexts/LanguageContext";
 
-interface JournalPageProps {
-	selectedLanguage: string;
-}
-
-export function JournalPage({ selectedLanguage }: JournalPageProps) {
+export function JournalPage() {
 	const navigate = useNavigate();
-	const entriesQuery = useEntries();
-	const createEntryMutation = useCreateEntry();
-	const updateEntryMutation = useUpdateEntry();
+	const { language } = useLanguage();
+
+	const {
+		data: entries,
+		isLoading: isEntryLoading,
+		error: entryError,
+	} = useEntries();
+
+	const {
+		mutateAsync: createEntry,
+		isPending: isCreatePending,
+		error: createEntryError,
+	} = useCreateEntry();
+
+	const {
+		mutateAsync: updateEntry,
+		isPending: isUpdatePending,
+		error: updateEntryError,
+	} = useUpdateEntry();
+
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
 	const [isEditingToday, setIsEditingToday] = useState(false);
 
 	const todaysEntry = useMemo(
 		() =>
-			entriesQuery.data?.find(
+			entries?.find(
 				(entry) =>
 					new Date(entry.createdAt).toDateString() ===
 					new Date().toDateString(),
 			) ?? null,
-		[entriesQuery.data],
+		[entries],
 	);
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		const entry = todaysEntry
-			? await updateEntryMutation.mutateAsync({
+			? await updateEntry({
 					id: todaysEntry.id,
 					title,
 					content,
-					targetLanguages: [selectedLanguage],
+					targetLanguages: [language],
 				})
-			: await createEntryMutation.mutateAsync({
+			: await createEntry({
 					title,
 					content,
-					targetLanguages: [selectedLanguage],
+					targetLanguages: [language],
 				});
 
 		setTitle("");
@@ -61,15 +75,14 @@ export function JournalPage({ selectedLanguage }: JournalPageProps) {
 		setIsEditingToday(true);
 	};
 
-	const isSaving =
-		createEntryMutation.isPending || updateEntryMutation.isPending;
+	const isSaving = isCreatePending || isUpdatePending;
 
-	if (entriesQuery.isLoading) {
+	if (isEntryLoading) {
 		return <LoadingState />;
 	}
 
-	if (entriesQuery.error) {
-		return <ErrorState message={entriesQuery.error.message} />;
+	if (entryError) {
+		return <ErrorState message={entryError.message} />;
 	}
 
 	return (
@@ -123,11 +136,11 @@ export function JournalPage({ selectedLanguage }: JournalPageProps) {
 									: "Save entry"}
 						</button>
 					</div>
-					{createEntryMutation.error ? (
-						<ErrorState message={createEntryMutation.error.message} />
+					{createEntryError ? (
+						<ErrorState message={createEntryError.message} />
 					) : null}
-					{updateEntryMutation.error ? (
-						<ErrorState message={updateEntryMutation.error.message} />
+					{updateEntryError ? (
+						<ErrorState message={updateEntryError.message} />
 					) : null}
 				</form>
 			) : (
@@ -148,7 +161,7 @@ export function JournalPage({ selectedLanguage }: JournalPageProps) {
 						</button>
 					</div>
 					<div className="space-y-4">
-						{entriesQuery.data?.map((entry) => (
+						{entries?.map((entry) => (
 							<Link
 								key={entry.id}
 								to={`/entries/${entry.id}`}
