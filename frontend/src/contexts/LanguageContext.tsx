@@ -33,10 +33,13 @@ export const LanguageProvider = ({ children }: Props) => {
 			return Language.Spanish;
 		}
 
-		const storedLanguage = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
+		const storedLanguage = window.localStorage.getItem(
+			LANGUAGE_STORAGE_KEY,
+		) as Language;
+
 		if (
 			storedLanguage === null ||
-			Object.values(Language).includes(storedLanguage as Language)
+			!Object.values(Language).includes(storedLanguage)
 		) {
 			return Language.Spanish;
 		}
