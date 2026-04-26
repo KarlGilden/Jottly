@@ -1,10 +1,4 @@
-import {
-	createContext,
-	ReactElement,
-	ReactNode,
-	useContext,
-	useState,
-} from "react";
+import { createContext, useContext, useState } from "react";
 import { IoClose } from "react-icons/io5";
 interface Alert {
 	type: "success" | "error";
@@ -21,7 +15,7 @@ interface Props {
 }
 
 const AlertContext = createContext<AlertContextType>({
-	createAlert: (alert: Alert) => {},
+	createAlert: (_alert: Alert) => {},
 });
 
 export const AlertProvider = ({ children }: Props) => {
@@ -29,7 +23,7 @@ export const AlertProvider = ({ children }: Props) => {
 
 	const createAlert = (alert: Alert) => {
 		setAlerts([...alerts, alert]);
-		const timeoutId = setTimeout(() => {
+		setTimeout(() => {
 			setAlerts((prev) => prev.filter((x) => x !== alert));
 		}, 3000);
 	};

@@ -23,7 +23,7 @@ interface Props {
 const LanguageContext = createContext<LanguageContextType>({
 	language: Language.Spanish,
 	setLanguage: function (value: SetStateAction<Language>): void {
-		throw new Error("Function not implemented.");
+		throw new Error("Function not implemented." + value);
 	},
 });
 

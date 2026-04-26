@@ -24,7 +24,7 @@ interface Props {
 const ThemeContext = createContext<ThemeContextType>({
 	themeMode: "light",
 	setThemeMode: function (value: SetStateAction<ThemeMode>): void {
-		throw new Error("Function not implemented.");
+		throw new Error("Function not implemented." + value);
 	},
 });
 

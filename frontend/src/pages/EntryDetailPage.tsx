@@ -1,8 +1,7 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { useCreateAudio } from "../api/mutations/useCreateAudio";
-import { useCreateSavedWord } from "../api/mutations/useCreateSavedWord";
 import { EntryTranslation, useEntry } from "../api/queries/useEntry";
 import { ErrorState } from "../components/ErrorState";
 import { LoadingState } from "../components/LoadingState";
@@ -27,7 +26,6 @@ export function EntryDetailPage() {
 	const { data: entry, error, isLoading } = useEntry(entryId, language);
 
 	const createAudioMutation = useCreateAudio();
-	const createSavedWordMutation = useCreateSavedWord();
 	const { mutate: exportToLingq } = useExportToLingq();
 
 	const [reviewMode, setReviewMode] = useState<ReviewMode>("text");

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { IconBaseProps, IconType } from "react-icons";
+import { IconType } from "react-icons";
 
 interface IProps {
 	state: boolean;

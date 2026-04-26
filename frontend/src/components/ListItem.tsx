@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { EntryListItem } from "../api/queries/useEntries";
 
 interface IProps {
 	id: number;
