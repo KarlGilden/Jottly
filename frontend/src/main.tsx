@@ -19,7 +19,7 @@ if (!clerkPublishableKey) {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
-		<ClerkProvider publishableKey={clerkPublishableKey}>
+		<ClerkProvider publishableKey={clerkPublishableKey} afterSignOutUrl="/">
 			<QueryClientProvider client={queryClient}>
 				<LanguageProvider>
 					<AlertProvider>

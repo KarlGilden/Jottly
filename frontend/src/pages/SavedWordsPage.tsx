@@ -6,7 +6,7 @@ export function SavedWordsPage() {
   const savedWordsQuery = useSavedWords();
 
   return (
-    <div className="space-y-6">
+    <div className="mx-auto w-full max-w-4xl space-y-6 pt-8">
       <div>
         <h2 className="text-2xl font-semibold">Saved words</h2>
         <p className="text-sm text-muted-foreground">Vocabulary saved from sentence review appears here.</p>

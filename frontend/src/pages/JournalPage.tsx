@@ -86,12 +86,12 @@ export function JournalPage() {
 	}
 
 	return (
-		<div className="mx-auto flex max-w-3xl flex-col gap-8 pt-8">
+		<div className="w-full max-w-[900px] gap-8 pt-8">
 			{!todaysEntry || isEditingToday ? (
 				<form className="flex flex-col gap-4" onSubmit={handleSubmit}>
 					<div className="flex">
 						<input
-							className="w-full bg-background text-foreground outline-none placeholder:text-muted-foreground text-2xl"
+							className="w-full bg-background text-foreground outline-none placeholder:text-muted-foreground text-3xl"
 							maxLength={20}
 							placeholder="Title"
 							value={title}
@@ -103,7 +103,7 @@ export function JournalPage() {
 					</div>
 
 					<textarea
-						className="min-h-80 w-full resize-none bg-background px-0 py-0 text-base leading-8 text-foreground outline-none placeholder:text-muted-foreground"
+						className="min-h-80 w-full text-xl resize-none bg-background px-0 py-0 text-base leading-8 text-foreground outline-none placeholder:text-muted-foreground"
 						placeholder="Write your journal entry here..."
 						value={content}
 						onChange={(event) => setContent(event.target.value)}

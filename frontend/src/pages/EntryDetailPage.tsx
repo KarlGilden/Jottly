@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useMemo, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 
 import { useCreateAudio } from "../api/mutations/useCreateAudio";
 import { useCreateSavedWord } from "../api/mutations/useCreateSavedWord";
@@ -11,13 +11,15 @@ import { useAlert } from "../contexts/AlertContext";
 import { MdShortText } from "react-icons/md";
 import { BsCardText } from "react-icons/bs";
 import { useLanguage } from "../contexts/LanguageContext";
+import SentenceView from "../components/SentenceView";
+import IconToggle from "../components/IconToggle";
 
 type ReviewMode = "text" | "sentence";
 
 export function EntryDetailPage() {
 	const { createAlert } = useAlert();
 	const { language } = useLanguage();
-	const nav = useNavigate();
+
 	const params = useParams();
 
 	const entryId = params.id ? Number(params.id) : null;
@@ -29,11 +31,7 @@ export function EntryDetailPage() {
 	const { mutate: exportToLingq } = useExportToLingq();
 
 	const [reviewMode, setReviewMode] = useState<ReviewMode>("text");
-	const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
-	const [sentenceVisible, setSentenceVisible] = useState(true);
 	const [lingqLessonLink, setLinqLessonLink] = useState("");
-
-	const touchStartXRef = useRef<number | null>(null);
 
 	const activeTranslation = useMemo(() => {
 		if (!entry) {
@@ -56,52 +54,6 @@ export function EntryDetailPage() {
 			) ?? [],
 		[activeTranslation],
 	);
-
-	const currentSentence = translatedSentences[currentSentenceIndex] ?? null;
-
-	useEffect(() => {
-		setCurrentSentenceIndex(0);
-	}, [activeTranslation?.id]);
-
-	useEffect(() => {
-		setSentenceVisible(false);
-		const timeout = window.setTimeout(() => {
-			setSentenceVisible(true);
-		}, 120);
-
-		return () => window.clearTimeout(timeout);
-	}, [currentSentenceIndex]);
-
-	const goToPreviousSentence = () => {
-		setCurrentSentenceIndex((currentIndex) => Math.max(currentIndex - 1, 0));
-	};
-
-	const goToNextSentence = () => {
-		setCurrentSentenceIndex((currentIndex) =>
-			Math.min(currentIndex + 1, translatedSentences.length - 1),
-		);
-	};
-
-	const handleTouchStart = (clientX: number) => {
-		touchStartXRef.current = clientX;
-	};
-
-	const handleTouchEnd = (clientX: number) => {
-		if (touchStartXRef.current === null) {
-			return;
-		}
-
-		const distance = clientX - touchStartXRef.current;
-		touchStartXRef.current = null;
-
-		if (distance <= -40) {
-			goToNextSentence();
-		}
-
-		if (distance >= 40) {
-			goToPreviousSentence();
-		}
-	};
 
 	const handleExport = (data?: EntryTranslation) => {
 		if (!entry || !data) return;
@@ -150,15 +102,17 @@ export function EntryDetailPage() {
 	}
 
 	return (
-		<div className="mx-auto max-w-4xl space-y-5 pb-40">
-			<div className="flex flex-col gap-1 pb-2 sm:flex-row sm:items-end sm:justify-between">
+		<div className="flex flex-col w-full max-w-[900px] gap-5 pt-8">
+			<div className="flex flex-col gap-2 pb-2 sm:flex-row sm:items-end sm:justify-between">
 				<div className="flex min-w-0 items-center gap-4">
-					<h1 className="font-semibold text-xl min-w-0 truncate text-foreground">
+					<h1 className="font-semibold text-3xl text-foreground">
 						{entry.title}
 					</h1>
-					<p className="text-lg w-32 shrink-0 text-sm text-muted-foreground sm:w-40">
+					<p className="text-xl font-semibold">
 						{new Date(entry.createdAt).toLocaleDateString()}
 					</p>
+				</div>
+				<div className="flex items-center gap-4">
 					{lingqLessonLink ? (
 						<a href={lingqLessonLink} target="_blank">
 							<button
@@ -177,100 +131,28 @@ export function EntryDetailPage() {
 							Export to LingQ
 						</button>
 					)}
-				</div>
-				<div className="inline-flex w-full rounded-md bg-muted p-1 sm:w-auto">
-					<button
-						type="button"
-						className={[
-							"flex-1 rounded-md px-3 py-2 text-sm transition-colors sm:flex-none",
-							reviewMode === "text"
-								? "bg-primary text-primary-foreground"
-								: "text-muted-foreground hover:text-foreground",
-						].join(" ")}
-						onClick={() => setReviewMode("text")}
-					>
-						<BsCardText className="text-xl" />
-					</button>
-					<button
-						type="button"
-						className={[
-							"flex-1 rounded-md px-3 py-2 text-sm transition-colors sm:flex-none",
-							reviewMode === "sentence"
-								? "bg-primary text-primary-foreground"
-								: "text-muted-foreground hover:text-foreground",
-						].join(" ")}
-						onClick={() => setReviewMode("sentence")}
-					>
-						<MdShortText className="text-2xl" />
-					</button>
+					<IconToggle
+						LeftIcon={BsCardText}
+						RightIcon={MdShortText}
+						state={reviewMode === "text" ? true : false}
+						setState={setReviewMode}
+					/>
 				</div>
 			</div>
 
 			{activeTranslation ? (
-				<div className="space-y-6">
-					{reviewMode === "text" ? (
-						<div className="min-h-[50vh]">
-							<p className="whitespace-pre-wrap text-lg leading-9 text-foreground sm:text-xl">
-								{activeTranslation.content}
-							</p>
-						</div>
-					) : translatedSentences.length > 0 ? (
-						<div className="flex min-h-[55vh] flex-col items-center justify-center gap-8">
-							<div
-								className="flex min-h-56 w-full items-center justify-center px-2 text-center sm:px-8"
-								onTouchEnd={(event) =>
-									handleTouchEnd(event.changedTouches[0]?.clientX ?? 0)
-								}
-								onTouchStart={(event) =>
-									handleTouchStart(event.touches[0]?.clientX ?? 0)
-								}
-							>
-								<div
-									className={[
-										"w-full transition-opacity duration-200",
-										sentenceVisible ? "opacity-100" : "opacity-0",
-									].join(" ")}
-								>
-									<p className="mt-4 text-2xl leading-10 text-foreground sm:text-3xl sm:leading-[3.5rem]">
-										{currentSentence?.translatedSentence}
-									</p>
-								</div>
-							</div>
-
-							<div className="flex w-full items-center justify-between gap-3">
-								<button
-									type="button"
-									className="rounded-md border border-border px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
-									disabled={currentSentenceIndex === 0}
-									onClick={goToPreviousSentence}
-								>
-									Previous
-								</button>
-								<p className="text-center text-sm text-muted-foreground">
-									Swipe on mobile or use the controls.
-								</p>
-								<button
-									type="button"
-									className="rounded-md border border-border px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
-									disabled={
-										currentSentenceIndex >= translatedSentences.length - 1
-									}
-									onClick={goToNextSentence}
-								>
-									Next
-								</button>
-							</div>
-						</div>
-					) : (
-						<p className="text-sm text-muted-foreground">
-							No sentence content is available for this translation yet.
+				reviewMode === "text" ? (
+					<div className="min-h-[50vh]">
+						<p className="whitespace-pre-wrap text-lg leading-9 text-foreground sm:text-xl">
+							{activeTranslation.content}
 						</p>
-					)}
-
-					{createSavedWordMutation.error ? (
-						<ErrorState message={createSavedWordMutation.error.message} />
-					) : null}
-				</div>
+					</div>
+				) : (
+					<SentenceView
+						activeTranslation={activeTranslation}
+						translatedSentences={translatedSentences}
+					/>
+				)
 			) : (
 				<p className="text-sm text-muted-foreground">
 					No translation is ready for the selected language yet.
@@ -278,7 +160,7 @@ export function EntryDetailPage() {
 			)}
 
 			<div className="fixed inset-x-0 bottom-0 border-t border-border bg-background">
-				<div className="mx-auto flex max-w-4xl flex-col gap-3 px-4 py-4 sm:px-6 lg:px-8">
+				<div className="app-content-shell mx-auto flex max-w-4xl flex-col gap-3 py-4">
 					{activeTranslation?.audioUrl ? (
 						<audio
 							className="w-full"
