@@ -15,7 +15,7 @@ export function PublicLandingPage() {
 			?.scrollIntoView({ behavior: "smooth" });
 	};
 	return (
-		<div>
+		<div className="w-full">
 			<section className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
 				<div className="absolute inset-0 opacity-5">
 					<svg className="w-full h-full" viewBox="0 0 800 800" fill="none">
@@ -57,21 +57,6 @@ export function PublicLandingPage() {
 						words
 					</p>
 
-					<div className="flex flex-wrap justify-center gap-6 mb-12 text-[#8b7355]/80">
-						<div className="flex items-center gap-2">
-							<LuLanguages className="w-5 h-5" />
-							<span>Natural speech</span>
-						</div>
-						<div className="flex items-center gap-2">
-							<LuBookOpen className="w-5 h-5" />
-							<span>Accurate translations</span>
-						</div>
-						<div className="flex items-center gap-2">
-							<LuPencilLine className="w-5 h-5" />
-							<span>Learn by reading & listening</span>
-						</div>
-					</div>
-
 					<button
 						onClick={() => navigate("/journal")}
 						className="px-12 py-4 bg-[#8b7355] text-white rounded-lg hover:bg-[#6d5a43] transition-all text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
@@ -80,7 +65,6 @@ export function PublicLandingPage() {
 					</button>
 				</div>
 
-				{/* Scroll indicator */}
 				<button
 					onClick={scrollToSteps}
 					className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[#8b7355]/60 hover:text-[#8b7355] transition-colors cursor-pointer group"
@@ -90,7 +74,6 @@ export function PublicLandingPage() {
 				</button>
 			</section>
 
-			{/* How It Works Section */}
 			<section
 				id="how-it-works"
 				className="min-h-screen py-24 px-6 bg-gradient-to-b from-transparent to-[#fdfcfb]"
@@ -104,7 +87,6 @@ export function PublicLandingPage() {
 					</h2>
 
 					<div className="grid md:grid-cols-3 gap-12 md:gap-8">
-						{/* Step 1 */}
 						<div className="relative">
 							<div className="flex flex-col items-center text-center">
 								<div className="w-20 h-20 rounded-full bg-[#8b7355]/10 flex items-center justify-center mb-6">
@@ -134,7 +116,6 @@ export function PublicLandingPage() {
 							</div>
 						</div>
 
-						{/* Step 2 */}
 						<div className="relative">
 							<div className="flex flex-col items-center text-center">
 								<div className="w-20 h-20 rounded-full bg-[#8b7355]/10 flex items-center justify-center mb-6">
@@ -164,7 +145,6 @@ export function PublicLandingPage() {
 							</div>
 						</div>
 
-						{/* Step 3 */}
 						<div className="relative">
 							<div className="flex flex-col items-center text-center">
 								<div className="w-20 h-20 rounded-full bg-[#8b7355]/10 flex items-center justify-center mb-6">
@@ -194,7 +174,6 @@ export function PublicLandingPage() {
 						</div>
 					</div>
 
-					{/* CTA */}
 					<div className="text-center mt-20">
 						<button
 							onClick={() => "/create"}

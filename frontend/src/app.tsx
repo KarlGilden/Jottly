@@ -8,14 +8,16 @@ import { PublicLandingPage } from "./pages/PublicLandingPage";
 import { ReviewPage } from "./pages/ReviewPage";
 import { SavedWordsPage } from "./pages/SavedWordsPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import LoginPage from "./pages/LoginPage";
 
 function AppContent() {
 	const location = useLocation();
 	const isHomePage = location.pathname === "/";
+	const isLogin = location.pathname === "/login";
 
 	return (
 		<div className="w-full flex flex-col items-center min-h-screen bg-background text-foreground">
-			{!isHomePage ? <Navbar /> : null}
+			{!isHomePage && !isLogin ? <Navbar /> : null}
 			<main className="app-content-shell flex flex-1 justify-center">
 				<Routes>
 					<Route path="/" element={<PublicLandingPage />} />
@@ -59,6 +61,7 @@ function AppContent() {
 							</ProtectedRoute>
 						}
 					/>
+					<Route path="/login" element={<LoginPage />} />
 				</Routes>
 			</main>
 		</div>

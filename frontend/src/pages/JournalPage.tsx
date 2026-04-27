@@ -86,7 +86,7 @@ export function JournalPage() {
 	}
 
 	return (
-		<div className="w-full max-w-[900px] gap-8 pt-8">
+		<div className="w-full max-w-[900px] gap-8 p-8">
 			{!todaysEntry || isEditingToday ? (
 				<form className="flex flex-col gap-4" onSubmit={handleSubmit}>
 					<div className="flex">

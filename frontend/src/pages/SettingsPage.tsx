@@ -42,7 +42,7 @@ export function SettingsPage() {
 	}
 
 	return (
-		<div className="w-full max-w-[900px] space-y-8 pt-8">
+		<div className="w-full max-w-[900px] p-8 space-y-5">
 			<div>
 				<h2 className="text-2xl font-semibold">Settings</h2>
 				<p className="text-sm text-muted-foreground">
