@@ -100,17 +100,17 @@ export function EntryDetailPage() {
 	}
 
 	return (
-		<div className="flex flex-col w-full max-w-[900px] gap-5 pt-8">
-			<div className="flex flex-col gap-2 pb-2 sm:flex-row sm:items-end sm:justify-between">
-				<div className="flex min-w-0 items-center gap-4">
+		<div className="flex flex-col w-full max-w-[900px] gap-5 py-8">
+			<div className="flex flex-col gap-2 pb-2 sm:flex-row sm:items-center sm:justify-between">
+				<div className="flex justify-between min-w-0 items-center gap-4">
 					<h1 className="font-semibold text-3xl text-foreground">
 						{entry.title}
 					</h1>
-					<p className="text-xl font-semibold">
+					<p className="font-semibold">
 						{new Date(entry.createdAt).toLocaleDateString()}
 					</p>
 				</div>
-				<div className="flex items-center gap-4">
+				<div className="flex justify-between items-center gap-4">
 					{lingqLessonLink ? (
 						<a href={lingqLessonLink} target="_blank">
 							<button

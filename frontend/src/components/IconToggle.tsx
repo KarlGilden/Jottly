@@ -10,11 +10,11 @@ interface IProps {
 
 const IconToggle = ({ state, setState, LeftIcon, RightIcon }: IProps) => {
 	return (
-		<div className="inline-flex w-full rounded-md bg-muted p-1 sm:w-auto">
+		<div className="rounded-md bg-muted p-1 sm:w-auto">
 			<button
 				type="button"
 				className={[
-					"flex-1 rounded-md px-3 py-2 text-sm transition-colors sm:flex-none",
+					"rounded-md px-3 py-2 text-sm transition-colors sm:flex-none",
 					state
 						? "bg-primary text-primary-foreground"
 						: "text-muted-foreground hover:text-foreground",
@@ -26,7 +26,7 @@ const IconToggle = ({ state, setState, LeftIcon, RightIcon }: IProps) => {
 			<button
 				type="button"
 				className={[
-					"flex-1 rounded-md px-3 py-2 text-sm transition-colors sm:flex-none",
+					"rounded-md px-3 py-2 text-sm transition-colors sm:flex-none",
 					!state
 						? "bg-primary text-primary-foreground"
 						: "text-muted-foreground hover:text-foreground",
