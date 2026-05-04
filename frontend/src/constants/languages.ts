@@ -9,6 +9,8 @@ export enum Language {
 	Japanese = "ja",
 	French = "fr",
 	Italian = "it",
+	Portuguese = "pt",
+	Afrikaans = "af",
 }
 
 export const languageOptions: LanguageOption[] = [
@@ -17,6 +19,8 @@ export const languageOptions: LanguageOption[] = [
 	{ code: Language.German, label: "German" },
 	{ code: Language.Italian, label: "Italian" },
 	{ code: Language.Japanese, label: "Japanese" },
+	{ code: Language.Portuguese, label: "Portuguese" },
+	{ code: Language.Afrikaans, label: "Afrikaans" },
 ];
 
 export const defaultLanguage = languageOptions[0].code;

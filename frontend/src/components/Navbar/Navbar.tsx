@@ -2,12 +2,9 @@ import { useAuth, useClerk, useUser } from "@clerk/react";
 import { useEffect, useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { NavLink, useLocation } from "react-router-dom";
-
-import { Language, languageOptions } from "../../constants/languages";
-import { useLanguage } from "../../contexts/LanguageContext";
+import LanguageSelector from "../LanguageSelector";
 
 export default function Navbar() {
-	const { language, setLanguage } = useLanguage();
 	const { isSignedIn } = useAuth();
 	const { openSignIn } = useClerk();
 	const { user } = useUser();
@@ -36,19 +33,6 @@ export default function Navbar() {
 
 	const accountControls = isSignedIn ? (
 		<>
-			<label className="flex items-center gap-2 text-sm text-muted-foreground">
-				<select
-					className="rounded-md border border-border bg-input-background px-3 py-2 text-sm text-foreground outline-none transition focus:border-primary"
-					value={language}
-					onChange={(event) => setLanguage(event.target.value as Language)}
-				>
-					{languageOptions.map((language) => (
-						<option key={language.code} value={language.code}>
-							{language.label}
-						</option>
-					))}
-				</select>
-			</label>
 			<NavLink to="/settings" className="flex items-center pl-1">
 				{user?.imageUrl ? (
 					<img
@@ -81,6 +65,7 @@ export default function Navbar() {
 						<NavLink to="/" className="text-2xl font-semibold">
 							Jottly
 						</NavLink>
+						<LanguageSelector />
 						<button
 							type="button"
 							className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
@@ -105,6 +90,7 @@ export default function Navbar() {
 								<NavLink to="/settings" className={navigationClassName}>
 									Settings
 								</NavLink>
+								<LanguageSelector />
 								{accountControls}
 							</nav>
 						</div>
@@ -154,58 +140,7 @@ export default function Navbar() {
 					<NavLink to="/settings" className={navigationClassName}>
 						Settings
 					</NavLink>
-
-					{isSignedIn ? (
-						<div className="mt-4 flex flex-col gap-4 border-t border-border pt-4">
-							<label className="flex flex-col gap-2 text-sm text-muted-foreground">
-								<span>Language</span>
-								<select
-									className="rounded-md border border-border bg-input-background px-3 py-2 text-sm text-foreground outline-none transition focus:border-primary"
-									value={language}
-									onChange={(event) =>
-										setLanguage(event.target.value as Language)
-									}
-								>
-									{languageOptions.map((language) => (
-										<option key={language.code} value={language.code}>
-											{language.label}
-										</option>
-									))}
-								</select>
-							</label>
-
-							<NavLink
-								to="/settings"
-								className="flex items-center gap-3 rounded-md px-3 py-2 transition-colors hover:bg-muted"
-							>
-								{user?.imageUrl ? (
-									<img
-										src={user.imageUrl}
-										alt={user.firstName ?? "User"}
-										className="h-8 w-8 rounded-full"
-									/>
-								) : (
-									<span className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-sm text-muted-foreground">
-										U
-									</span>
-								)}
-								<span className="text-sm text-foreground">
-									{user?.firstName ?? "Account"}
-								</span>
-							</NavLink>
-						</div>
-					) : (
-						<button
-							type="button"
-							className="mt-4 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-							onClick={() => {
-								setIsMobileMenuOpen(false);
-								openSignIn();
-							}}
-						>
-							Sign In
-						</button>
-					)}
+					{accountControls}
 				</nav>
 			</aside>
 		</>
