@@ -12,6 +12,7 @@ import { BsCardText } from "react-icons/bs";
 import { useLanguage } from "../contexts/LanguageContext";
 import SentenceView from "../components/SentenceView";
 import IconToggle from "../components/IconToggle";
+import Page from "../components/common/Page";
 
 type ReviewMode = "text" | "sentence";
 
@@ -100,12 +101,10 @@ export function EntryDetailPage() {
 	}
 
 	return (
-		<div className="flex flex-col w-full max-w-[900px] gap-5 py-8">
+		<Page>
 			<div className="flex flex-col gap-2 pb-2 sm:flex-row sm:items-center sm:justify-between">
 				<div className="flex justify-between min-w-0 items-center gap-4">
-					<h1 className="font-semibold text-3xl text-foreground">
-						{entry.title}
-					</h1>
+					<h1 className="font-black text-3xl text-main-text">{entry.title}</h1>
 					<p className="font-semibold">
 						{new Date(entry.createdAt).toLocaleDateString()}
 					</p>
@@ -115,7 +114,7 @@ export function EntryDetailPage() {
 						<a href={lingqLessonLink} target="_blank">
 							<button
 								type="button"
-								className="rounded-md border border-border px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+								className="rounded-md border border-border px-3 py-2 text-sm transition-colors hover:bg-muted hover:text-foreground"
 							>
 								Go to LingQ lesson!
 							</button>
@@ -123,7 +122,7 @@ export function EntryDetailPage() {
 					) : (
 						<button
 							type="button"
-							className="rounded-md border border-border px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+							className="rounded-md border border-border px-3 py-2 text-sm transition-colors hover:bg-muted hover:text-foreground"
 							onClick={() => handleExport(activeTranslation ?? undefined)}
 						>
 							Export to LingQ
@@ -141,7 +140,7 @@ export function EntryDetailPage() {
 			{activeTranslation ? (
 				reviewMode === "text" ? (
 					<div className="min-h-[50vh]">
-						<p className="whitespace-pre-wrap text-lg leading-9 text-foreground sm:text-xl">
+						<p className="whitespace-pre-wrap text-lg leading-9 sm:text-xl">
 							{activeTranslation.content}
 						</p>
 					</div>
@@ -197,6 +196,6 @@ export function EntryDetailPage() {
 					) : null}
 				</div>
 			</div>
-		</div>
+		</Page>
 	);
 }

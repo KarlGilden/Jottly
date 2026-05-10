@@ -6,9 +6,9 @@ import { EntryDetailPage } from "./pages/EntryDetailPage";
 import { JournalPage } from "./pages/JournalPage";
 import { PublicLandingPage } from "./pages/PublicLandingPage";
 import { ReviewPage } from "./pages/ReviewPage";
-import { SavedWordsPage } from "./pages/SavedWordsPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import LoginPage from "./pages/LoginPage";
+import { routes } from "./constants/routes";
 
 function AppContent() {
 	const location = useLocation();
@@ -16,55 +16,45 @@ function AppContent() {
 	const isLogin = location.pathname === "/login";
 
 	return (
-		<div className="w-full flex flex-col items-center min-h-screen bg-background text-foreground">
+		<main className="w-full flex flex-col items-center min-h-screen bg-white text-main-text font-primary font-600">
 			{!isHomePage && !isLogin ? <Navbar /> : null}
-			<main className="app-content-shell flex flex-1 justify-center">
-				<Routes>
-					<Route path="/" element={<PublicLandingPage />} />
-					<Route
-						path="/journal"
-						element={
-							<ProtectedRoute>
-								<JournalPage />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/review"
-						element={
-							<ProtectedRoute>
-								<ReviewPage />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/entries/:id"
-						element={
-							<ProtectedRoute>
-								<EntryDetailPage />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/saved-words"
-						element={
-							<ProtectedRoute>
-								<SavedWordsPage />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path="/settings"
-						element={
-							<ProtectedRoute>
-								<SettingsPage />
-							</ProtectedRoute>
-						}
-					/>
-					<Route path="/login" element={<LoginPage />} />
-				</Routes>
-			</main>
-		</div>
+			<Routes>
+				<Route path={routes.HOME} element={<PublicLandingPage />} />
+				<Route
+					path={routes.JOURNAL}
+					element={
+						<ProtectedRoute>
+							<JournalPage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path={routes.REVIEW}
+					element={
+						<ProtectedRoute>
+							<ReviewPage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path={routes.ENTRIES(":id")}
+					element={
+						<ProtectedRoute>
+							<EntryDetailPage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path={routes.SETTINGS}
+					element={
+						<ProtectedRoute>
+							<SettingsPage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route path={routes.LOGIN} element={<LoginPage />} />
+			</Routes>
+		</main>
 	);
 }
 

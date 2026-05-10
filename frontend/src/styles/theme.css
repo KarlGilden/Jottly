@@ -1,66 +1,93 @@
 @custom-variant dark (&:is(.dark *));
 
-:root {
-  --color-primary: #8b7355;
-  --color-secondary: #f4f1ea;
-  --color-tertiary: #ffffff;
+.duolingo {
+	--color-primary: #8b7355;
+	--color-secondary: #f4f1ea;
+	--color-tertiary: #ffffff;
 
-  --color-primary-hover: #735f46;
-  --color-primary-soft: #a08b71;
-  --color-secondary-hover: #e6e0d4;
-  --color-secondary-strong: #d9ceb9;
-  --color-tertiary-hover: #f8f5ee;
-  --color-tertiary-strong: #efe8dc;
+	--color-primary-hover: #735f46;
+	--color-primary-soft: #a08b71;
+	--color-secondary-hover: #e6e0d4;
+	--color-secondary-strong: #d9ceb9;
+	--color-tertiary-hover: #f8f5ee;
+	--color-tertiary-strong: #efe8dc;
+}
+
+:root {
+	--font-primary: "Nunito", sans-serif;
+	--color-background: #f7f7f7;
+	--color-background-strong: #cccccc;
+
+	--color-forground-dark: #e8e8e8;
+	--color-foreground: #fff;
+
+	--color-primary: #58cc02;
+	--color-primary-light: #2364af;
+	--color-primary-dark: #052e5d;
+
+	--color-secondary: #1d8800;
+	--color-secondary-light: #1d8800;
+	--color-secondary-dark: #1d8800;
+
+	--color-main-text: #4b4b4b;
+	--color-sub-text: #777777;
+	--color-placeholder: oklch(87.2% 0.01 258.338);
+
+	--border-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 .dark {
-  --color-primary: #f4f1ea;
-  --color-secondary: #8b7355;
-  --color-tertiary: #ffffff;
+	--color-primary: #f4f1ea;
+	--color-secondary: #8b7355;
+	--color-tertiary: #ffffff;
 
-  --color-primary-hover: #ffffff;
-  --color-primary-soft: #e6e0d4;
-  --color-secondary-hover: #a08b71;
-  --color-secondary-strong: #735f46;
-  --color-tertiary-hover: #f8f5ee;
-  --color-tertiary-strong: #efe8dc;
+	--color-primary-hover: #ffffff;
+	--color-primary-soft: #e6e0d4;
+	--color-secondary-hover: #a08b71;
+	--color-secondary-strong: #735f46;
+	--color-tertiary-hover: #f8f5ee;
+	--color-tertiary-strong: #efe8dc;
 }
 
 @theme inline {
-  --color-background: var(--color-secondary);
-  --color-foreground: var(--color-primary);
-  --color-primary: var(--color-primary);
-  --color-primary-foreground: var(--color-tertiary);
-  --color-muted: var(--color-tertiary-hover);
-  --color-muted-foreground: var(--color-primary-soft);
-  --color-border: var(--color-secondary-strong);
-  --color-input-background: var(--color-tertiary);
-  --color-surface: var(--color-tertiary);
-  --color-surface-foreground: var(--color-primary);
-  --color-destructive: var(--color-primary-hover);
-  --color-destructive-foreground: var(--color-tertiary);
+	--font-primary: var(--font-primary);
+	--color-background: var(--color-background);
+	--color-foreground: var(--color-foreground);
+	--color-foreground-dark: var(--color-forground-dark);
+	--color-primary: var(--color-primary);
+	--color-primary-foreground: var(--color-primary-dark);
+	--color-main-text: var(--color-main-text);
+	--color-sub-text: var(--color-sub-text);
+	--color-placeholder: var(--color-placeholder);
+	--color-border: var(--color-background-strong);
+	--color-input-background: var(--color-tertiary);
+	--color-surface: var(--color-tertiary);
+	--color-surface-foreground: var(--color-primary);
+	--color-destructive: var(--color-primary-hover);
+	--color-destructive-foreground: var(--color-tertiary);
+	--shadow-border: var(--border-shadow);
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
+	* {
+		@apply border-border;
+	}
 
-  html {
-    @apply bg-background text-foreground;
-  }
+	html {
+		@apply bg-background text-foreground;
+	}
 
-  body {
-    @apply bg-background text-foreground;
-  }
+	body {
+		@apply bg-background text-foreground;
+	}
 }
 
 @layer components {
-  .app-content-shell {
-    @apply w-full px-5 sm:px-10 md:px-16 xl:px-20;
-  }
+	.app-content-shell {
+		@apply w-full px-5 sm:px-10 md:px-16 xl:px-20;
+	}
 
-  .app-navbar-shell {
-    @apply w-full px-5 py-2 sm:px-20 sm:py-4 md:px-32 md:py-4;
-  }
+	.app-navbar-shell {
+		@apply w-full px-5 py-2 sm:px-10 sm:py-4 md:px-16 md:py-4;
+	}
 }

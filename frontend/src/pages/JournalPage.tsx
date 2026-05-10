@@ -7,6 +7,11 @@ import { useEntries } from "../api/queries/useEntries";
 import { ErrorState } from "../components/ErrorState";
 import { LoadingState } from "../components/LoadingState";
 import { useLanguage } from "../contexts/LanguageContext";
+import { LuPenLine } from "react-icons/lu";
+import Button from "../components/common/Button";
+import HeaderText from "../components/common/HeaderText";
+import SubheaderText from "../components/common/SubheaderText";
+import Page from "../components/common/Page";
 
 export function JournalPage() {
 	const navigate = useNavigate();
@@ -86,103 +91,110 @@ export function JournalPage() {
 	}
 
 	return (
-		<div className="w-full max-w-[900px] gap-8 py-8">
-			{!todaysEntry || isEditingToday ? (
-				<form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-					<div className="flex">
-						<input
-							className="w-full bg-background text-foreground outline-none placeholder:text-muted-foreground text-3xl"
-							maxLength={20}
-							placeholder="Title"
-							value={title}
-							onChange={(event) => setTitle(event.target.value)}
-						/>
-						<h2 className="text-xl font-semibold">
-							{new Date().toLocaleDateString()}
-						</h2>
+		<Page>
+			<div className="flex flex-col">
+				<div className="mb-8 flex items-center gap-3">
+					<div className="w-14 h-14 bg-primary rounded-[20px] flex items-center justify-center">
+						<LuPenLine className="w-7 h-7 text-white" strokeWidth={2.5} />
 					</div>
-
-					<textarea
-						className="min-h-80 w-full text-xl resize-none bg-background px-0 py-0 text-base leading-8 text-foreground outline-none placeholder:text-muted-foreground"
-						placeholder="Write your journal entry here..."
-						value={content}
-						onChange={(event) => setContent(event.target.value)}
-					/>
-					<div className="flex items-center justify-between">
-						{todaysEntry ? (
-							<button
-								type="button"
-								className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-								onClick={() => {
-									setIsEditingToday(false);
-									setTitle("");
-									setContent("");
-								}}
-							>
-								Cancel
-							</button>
-						) : (
-							<span />
-						)}
-						<button
-							type="submit"
-							disabled={isSaving || content.trim().length === 0}
-							className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
-						>
-							{isSaving
-								? "Saving..."
-								: todaysEntry
-									? "Update entry"
-									: "Save entry"}
-						</button>
-					</div>
-					{createEntryError ? (
-						<ErrorState message={createEntryError.message} />
-					) : null}
-					{updateEntryError ? (
-						<ErrorState message={updateEntryError.message} />
-					) : null}
-				</form>
-			) : (
-				<div className="space-y-6">
-					<div className="flex items-center justify-between gap-4">
-						<div>
-							<h2 className="text-2xl font-semibold">Recent entries</h2>
-							<p className="text-sm text-muted-foreground">
-								Today&apos;s entry is already saved.
-							</p>
-						</div>
-						<button
-							type="button"
-							className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-							onClick={startEditingToday}
-						>
-							Edit Today&apos;s Entry
-						</button>
-					</div>
-					<div className="space-y-4">
-						{entries?.map((entry) => (
-							<Link
-								key={entry.id}
-								to={`/entries/${entry.id}`}
-								className="block border-b border-border pb-4 transition-colors hover:text-foreground"
-							>
-								<div className="mb-1 flex items-center justify-between gap-4">
-									<p className="text-sm font-medium">
-										{new Date(entry.createdAt).toLocaleDateString()}
-									</p>
-									<p className="text-xs text-muted-foreground/80">
-										{new Date(entry.createdAt).toLocaleTimeString()}
-									</p>
-								</div>
-								<p className="truncate text-sm text-muted-foreground">
-									{entry.title}
-								</p>
-							</Link>
-						))}
+					<div>
+						<HeaderText text={"Jot your thoughts"} />
+						<SubheaderText text={new Date().toDateString()} />
 					</div>
 				</div>
-			)}
-		</div>
+				{!todaysEntry || isEditingToday ? (
+					<form
+						className="relative flex flex-col shadow-border gap-4 px-4 py-2 md:px-8 md:py-4 rounded-[1.25rem] w-full bg-foreground"
+						onSubmit={handleSubmit}
+					>
+						<div className="flex ">
+							<input
+								className="w-full py-4 border-b-2 border-gray-300 border-solid outline-none text-main-text font-bold placeholder:text-placeholder text-3xl"
+								maxLength={20}
+								placeholder="Title"
+								value={title}
+								onChange={(event) => setTitle(event.target.value)}
+							/>
+						</div>
+
+						<textarea
+							className="py-5 min-h-80 w-full text-xl resize-none text-main-text font-semibold text-base leading-8 outline-none placeholder:text-placeholder"
+							placeholder="Write your journal entry here..."
+							value={content}
+							onChange={(event) => setContent(event.target.value)}
+						/>
+						<div className="relative flex items-center justify-between">
+							{todaysEntry ? (
+								<Button
+									content={"Cancel"}
+									onClick={() => {
+										setIsEditingToday(false);
+										setTitle("");
+										setContent("");
+									}}
+									isFloating
+								/>
+							) : (
+								<span />
+							)}
+							<Button
+								type="submit"
+								color="primary"
+								disabled={isSaving || content.trim().length === 0}
+								content={
+									isSaving ? "Saving..." : todaysEntry ? "Update" : "Save"
+								}
+								isFloating
+							/>
+						</div>
+						{createEntryError ? (
+							<ErrorState message={createEntryError.message} />
+						) : null}
+						{updateEntryError ? (
+							<ErrorState message={updateEntryError.message} />
+						) : null}
+					</form>
+				) : (
+					<div className="space-y-6">
+						<div className="flex items-center justify-between gap-4">
+							<div>
+								<h2 className="text-2xl font-semibold">Recent entries</h2>
+								<p className="text-sm text-muted-foreground">
+									Today&apos;s entry is already saved.
+								</p>
+							</div>
+							<button
+								type="button"
+								className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+								onClick={startEditingToday}
+							>
+								Edit Today&apos;s Entry
+							</button>
+						</div>
+						<div className="space-y-4">
+							{entries?.map((entry) => (
+								<Link
+									key={entry.id}
+									to={`/entries/${entry.id}`}
+									className="block border-b border-border pb-4 transition-colors hover:text-foreground"
+								>
+									<div className="mb-1 flex items-center justify-between gap-4">
+										<p className="text-sm font-medium">
+											{new Date(entry.createdAt).toLocaleDateString()}
+										</p>
+										<p className="text-xs text-muted-foreground/80">
+											{new Date(entry.createdAt).toLocaleTimeString()}
+										</p>
+									</div>
+									<p className="truncate text-sm text-muted-foreground">
+										{entry.title}
+									</p>
+								</Link>
+							))}
+						</div>
+					</div>
+				)}
+			</div>
+		</Page>
 	);
 }
