@@ -16,7 +16,7 @@ function AppContent() {
 	const isLogin = location.pathname === "/login";
 
 	return (
-		<main className="w-full flex flex-col items-center min-h-screen bg-white text-main-text font-primary font-600">
+		<main className="w-full flex flex-col items-center h-screen min-h-screen bg-white text-main-text font-primary font-600">
 			{!isHomePage && !isLogin ? <Navbar /> : null}
 			<Routes>
 				<Route path={routes.HOME} element={<PublicLandingPage />} />

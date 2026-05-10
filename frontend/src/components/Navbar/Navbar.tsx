@@ -25,7 +25,7 @@ export default function Navbar() {
 
 	return (
 		<>
-			<header className="w-full bg-foreground shadow-border z-100">
+			<header className="w-full bg-foreground shadow-border z-50">
 				<div className="app-navbar-shell">
 					<div className="flex items-center justify-between">
 						<LogoLink />
@@ -60,7 +60,7 @@ export default function Navbar() {
 			/>
 
 			<aside
-				className={`fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw] flex-col border-r border-border bg-background transition-transform duration-200 md:hidden ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
+				className={`fixed inset-y-0 left-0 z-100 flex w-72 max-w-[85vw] flex-col border-r border-border bg-foreground transition-transform duration-200 md:hidden ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
 				aria-hidden={!isMobileMenuOpen}
 			>
 				<div className="flex items-center justify-between border-b border-border px-5 py-4">

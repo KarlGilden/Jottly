@@ -16,8 +16,8 @@ const IconToggle = ({ state, setState, LeftIcon, RightIcon }: IProps) => {
 				className={[
 					"rounded-md px-3 py-2 text-sm transition-colors sm:flex-none",
 					state
-						? "bg-primary text-primary-foreground"
-						: "text-muted-foreground hover:text-foreground",
+						? "bg-primary text-foreground"
+						: "text-main-text hover:text-main-text/70",
 				].join(" ")}
 				onClick={() => setState("text")}
 			>
@@ -28,8 +28,8 @@ const IconToggle = ({ state, setState, LeftIcon, RightIcon }: IProps) => {
 				className={[
 					"rounded-md px-3 py-2 text-sm transition-colors sm:flex-none",
 					!state
-						? "bg-primary text-primary-foreground"
-						: "text-muted-foreground hover:text-foreground",
+						? "bg-primary text-foreground"
+						: "text-main-text hover:text-main-text/70",
 				].join(" ")}
 				onClick={() => setState("sentence")}
 			>

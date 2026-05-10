@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { EntrySentencePair, EntryTranslation } from "../api/queries/useEntry";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 interface IProps {
 	translatedSentences: EntrySentencePair[];
@@ -59,13 +60,21 @@ const SentenceView = ({ translatedSentences, activeTranslation }: IProps) => {
 
 	if (translatedSentences.length === 0)
 		return (
-			<p className="text-sm text-muted-foreground">
+			<p className="text-sm text-main-text">
 				No sentence content is available for this translation yet.
 			</p>
 		);
 
 	return (
-		<div className="flex min-h-[55vh] flex-col items-center justify-center gap-8">
+		<div className="flex h-full items-center justify-center gap-8 text-main-text">
+			<button
+				type="button"
+				className="hidden sm:block cursor-pointer h-full px-10 py-2 text-sm transition-colors hover:text-primary font-black disabled:cursor-not-allowed disabled:opacity-50"
+				disabled={currentSentenceIndex === 0}
+				onClick={goToPreviousSentence}
+			>
+				<FaAngleLeft className="text-5xl" />
+			</button>
 			<div
 				className="flex min-h-56 w-full items-center justify-center px-2 text-center sm:px-8"
 				onTouchEnd={(event) =>
@@ -81,30 +90,20 @@ const SentenceView = ({ translatedSentences, activeTranslation }: IProps) => {
 						sentenceVisible ? "opacity-100" : "opacity-0",
 					].join(" ")}
 				>
-					<p className="mt-4 text-2xl leading-10 text-foreground sm:text-3xl sm:leading-[3.5rem]">
+					<p className="mt-4 text-2xl leading-10 sm:text-3xl sm:leading-[3.5rem]">
 						{currentSentence?.translatedSentence}
 					</p>
 				</div>
 			</div>
 
-			<div className="flex w-full items-center justify-between gap-3">
-				<button
-					type="button"
-					className="rounded-md border border-border px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
-					disabled={currentSentenceIndex === 0}
-					onClick={goToPreviousSentence}
-				>
-					Previous
-				</button>
-				<button
-					type="button"
-					className="rounded-md border border-border px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
-					disabled={currentSentenceIndex >= translatedSentences.length - 1}
-					onClick={goToNextSentence}
-				>
-					Next
-				</button>
-			</div>
+			<button
+				type="button"
+				className="hidden sm:block cursor-pointer h-full px-10 py-2 text-sm text-muted-foreground transition-colors hover:text-primary font-black disabled:cursor-not-allowed disabled:opacity-50"
+				disabled={currentSentenceIndex >= translatedSentences.length - 1}
+				onClick={goToNextSentence}
+			>
+				<FaAngleRight className="text-5xl" />
+			</button>
 		</div>
 	);
 };

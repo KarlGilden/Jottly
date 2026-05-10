@@ -8,10 +8,12 @@ import TranslateBubble from "../components/svgs/TranslateBubble";
 import Books from "../components/svgs/Books";
 import Arrow from "../components/svgs/Arrow";
 import { languageOptions } from "../constants/languages";
-import { fileRoutes } from "../constants/routes";
+import { fileRoutes, routes } from "../constants/routes";
+import { useLanguage } from "../contexts/LanguageContext";
 
 export function PublicLandingPage() {
 	const navigate = useNavigate();
+	const { setLanguage } = useLanguage();
 
 	const scrollToSteps = () => {
 		document
@@ -33,7 +35,7 @@ export function PublicLandingPage() {
 				</div>
 
 				<Button
-					onClick={() => navigate("/journal")}
+					onClick={() => navigate(routes.JOURNAL)}
 					content={"Start Writing"}
 					size="lg"
 					color="primary"
@@ -41,9 +43,9 @@ export function PublicLandingPage() {
 
 				<button
 					onClick={scrollToSteps}
-					className="flex flex-col items-center gap-2 text-primary/60 hover:text-primary-dark transition-colors cursor-pointer group"
+					className="flex flex-col items-center gap-2 text-main-text/60 hover:text-main-text font-bold transition-colors cursor-pointer group"
 				>
-					<span className="text-sm">See how it works</span>
+					<span className="">See how it works</span>
 					<LuChevronDown className="w-6 h-6 animate-bounce" />
 				</button>
 			</section>
@@ -52,9 +54,13 @@ export function PublicLandingPage() {
 				{languageOptions.map((x) => {
 					return (
 						<img
-							className="w-6 sm:w-10 hover:scale-110 transition-all ease-in-out duration-200"
+							className="w-6 cursor-pointer sm:w-10 hover:scale-110 transition-all ease-in-out duration-200"
 							src={fileRoutes.FLAGS(x.code)}
 							alt=""
+							onClick={() => {
+								setLanguage(x.code);
+								navigate(routes.JOURNAL);
+							}}
 						/>
 					);
 				})}
@@ -62,16 +68,16 @@ export function PublicLandingPage() {
 
 			{/* How It Works Section */}
 			<section id="how-it-works" className="min-h-screen py-16 px-6 bg-white">
-				<div className="max-w-6xl mx-auto">
-					<h2 className="text-5xl md:text-6xl text-center mb-10 sm:mb-24 text-[#4B4B4B] font-black">
+				<div className="flex flex-col items-center gap-10 sm:gap-24 max-w-[900px] mx-auto">
+					<h2 className="text-5xl md:text-6xl text-center text-main-text font-black">
 						How It Works
 					</h2>
 
 					<div className="relative grid md:grid-cols-3 gap-16 md:gap-12">
 						{/* Step 1 */}
 						<div className="relative">
-							<div className="flex flex-col items-center text-center">
-								<div className="w-40 h-40 mb-8 transform hover:scale-105 transition-transform">
+							<div className="flex flex-col items-center text-center gap-1 sm:gap-5">
+								<div className="w-40 h-40 transform hover:scale-105 transition-transform">
 									<Notebook />
 								</div>
 
@@ -89,8 +95,8 @@ export function PublicLandingPage() {
 
 						{/* Step 2 */}
 						<div className="relative">
-							<div className="flex flex-col items-center text-center">
-								<div className="w-40 h-40 mb-8 transform hover:scale-105 transition-transform">
+							<div className="flex flex-col items-center text-center gap-1 sm:gap-5">
+								<div className="w-40 h-40 transform hover:scale-105 transition-transform">
 									<TranslateBubble />
 								</div>
 								<HeaderText text="See It Translated" />
@@ -108,8 +114,8 @@ export function PublicLandingPage() {
 
 						{/* Step 3 */}
 						<div className="relative">
-							<div className="flex flex-col items-center text-center">
-								<div className="w-40 h-40 mb-8 transform hover:scale-105 transition-transform">
+							<div className="flex flex-col items-center text-center gap-1 sm:gap-5">
+								<div className="w-40 h-40 transform hover:scale-105 transition-transform">
 									<Books />
 								</div>
 
@@ -122,15 +128,12 @@ export function PublicLandingPage() {
 						</div>
 					</div>
 
-					{/* CTA */}
-					<div className="text-center mt-24">
-						<button
-							onClick={() => navigate("/create")}
-							className="px-16 py-5 bg-[#58CC02] text-white rounded-full hover:bg-[#4CAD02] transition-all text-xl font-black shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 uppercase tracking-wide"
-						>
-							Start Your Journey
-						</button>
-					</div>
+					<Button
+						onClick={() => navigate(routes.JOURNAL)}
+						content={"Start Your Journey"}
+						color="primary"
+						size="lg"
+					/>
 				</div>
 			</section>
 		</div>

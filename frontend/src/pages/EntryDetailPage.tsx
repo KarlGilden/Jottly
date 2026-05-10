@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { useCreateAudio } from "../api/mutations/useCreateAudio";
 import { EntryTranslation, useEntry } from "../api/queries/useEntry";
 import { ErrorState } from "../components/ErrorState";
 import { LoadingState } from "../components/LoadingState";
@@ -26,7 +25,7 @@ export function EntryDetailPage() {
 
 	const { data: entry, error, isLoading } = useEntry(entryId, language);
 
-	const createAudioMutation = useCreateAudio();
+	//const _createAudioMutation = useCreateAudio();
 	const { mutate: exportToLingq } = useExportToLingq();
 
 	const [reviewMode, setReviewMode] = useState<ReviewMode>("text");
@@ -102,99 +101,103 @@ export function EntryDetailPage() {
 
 	return (
 		<Page>
-			<div className="flex flex-col gap-2 pb-2 sm:flex-row sm:items-center sm:justify-between">
-				<div className="flex justify-between min-w-0 items-center gap-4">
-					<h1 className="font-black text-3xl text-main-text">{entry.title}</h1>
-					<p className="font-semibold">
-						{new Date(entry.createdAt).toLocaleDateString()}
-					</p>
-				</div>
-				<div className="flex justify-between items-center gap-4">
-					{lingqLessonLink ? (
-						<a href={lingqLessonLink} target="_blank">
+			<div className="flex flex-col h-full">
+				<div className="flex flex-col gap-2 pb-2 sm:flex-row sm:items-center sm:justify-between">
+					<div className="flex justify-between min-w-0 items-center gap-4">
+						<h1 className="font-black text-3xl text-main-text">
+							{entry.title}
+						</h1>
+						<p className="font-semibold">
+							{new Date(entry.createdAt).toLocaleDateString()}
+						</p>
+					</div>
+					<div className="flex justify-between items-center gap-4">
+						{lingqLessonLink ? (
+							<a href={lingqLessonLink} target="_blank">
+								<button
+									type="button"
+									className="rounded-md border border-border px-3 py-2 text-sm transition-colors hover:bg-muted hover:text-foreground"
+								>
+									Go to LingQ lesson!
+								</button>
+							</a>
+						) : (
 							<button
 								type="button"
 								className="rounded-md border border-border px-3 py-2 text-sm transition-colors hover:bg-muted hover:text-foreground"
+								onClick={() => handleExport(activeTranslation ?? undefined)}
 							>
-								Go to LingQ lesson!
+								Export to LingQ
 							</button>
-						</a>
-					) : (
-						<button
-							type="button"
-							className="rounded-md border border-border px-3 py-2 text-sm transition-colors hover:bg-muted hover:text-foreground"
-							onClick={() => handleExport(activeTranslation ?? undefined)}
-						>
-							Export to LingQ
-						</button>
-					)}
-					<IconToggle
-						LeftIcon={BsCardText}
-						RightIcon={MdShortText}
-						state={reviewMode === "text" ? true : false}
-						setState={setReviewMode}
-					/>
-				</div>
-			</div>
-
-			{activeTranslation ? (
-				reviewMode === "text" ? (
-					<div className="min-h-[50vh]">
-						<p className="whitespace-pre-wrap text-lg leading-9 sm:text-xl">
-							{activeTranslation.content}
-						</p>
-					</div>
-				) : (
-					<SentenceView
-						activeTranslation={activeTranslation}
-						translatedSentences={translatedSentences}
-					/>
-				)
-			) : (
-				<p className="text-sm text-muted-foreground">
-					No translation is ready for the selected language yet.
-				</p>
-			)}
-
-			<div className="fixed inset-x-0 bottom-0 border-t border-border bg-background">
-				<div className="app-content-shell mx-auto flex max-w-4xl flex-col gap-3 py-4">
-					{activeTranslation?.audioUrl ? (
-						<audio
-							className="w-full"
-							controls
-							src={`${import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3001"}${activeTranslation.audioUrl}`}
+						)}
+						<IconToggle
+							LeftIcon={BsCardText}
+							RightIcon={MdShortText}
+							state={reviewMode === "text" ? true : false}
+							setState={setReviewMode}
 						/>
-					) : activeTranslation ? (
-						<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-							<p className="text-sm text-muted-foreground">
-								Audio has not been generated for this translation yet.
+					</div>
+				</div>
+
+				{activeTranslation ? (
+					reviewMode === "text" ? (
+						<div className="min-h-[50vh]">
+							<p className="whitespace-pre-wrap text-lg leading-9 sm:text-xl">
+								{activeTranslation.content}
 							</p>
-							<button
-								type="button"
-								disabled={createAudioMutation.isPending}
-								className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
-								onClick={() =>
-									createAudioMutation.mutate({
-										entryId: entry.id,
-										translationId: activeTranslation.id,
-									})
-								}
-							>
-								{createAudioMutation.isPending
-									? "Generating..."
-									: "Generate Audio"}
-							</button>
 						</div>
 					) : (
-						<p className="text-sm text-muted-foreground">
-							Translation unavailable for the selected language.
-						</p>
-					)}
+						<SentenceView
+							activeTranslation={activeTranslation}
+							translatedSentences={translatedSentences}
+						/>
+					)
+				) : (
+					<p className="text-sm text-muted-foreground">
+						No translation is ready for the selected language yet.
+					</p>
+				)}
 
-					{createAudioMutation.error ? (
-						<ErrorState message={createAudioMutation.error.message} />
-					) : null}
-				</div>
+				{/* <div className="fixed inset-x-0 bottom-0 border-t border-border bg-background">
+					<div className="app-content-shell mx-auto flex max-w-4xl flex-col gap-3 py-4">
+						{activeTranslation?.audioUrl ? (
+							<audio
+								className="w-full"
+								controls
+								src={`${import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3001"}${activeTranslation.audioUrl}`}
+							/>
+						) : activeTranslation ? (
+							<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+								<p className="text-sm text-muted-foreground">
+									Audio has not been generated for this translation yet.
+								</p>
+								<button
+									type="button"
+									disabled={createAudioMutation.isPending}
+									className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+									onClick={() =>
+										createAudioMutation.mutate({
+											entryId: entry.id,
+											translationId: activeTranslation.id,
+										})
+									}
+								>
+									{createAudioMutation.isPending
+										? "Generating..."
+										: "Generate Audio"}
+								</button>
+							</div>
+						) : (
+							<p className="text-sm text-muted-foreground">
+								Translation unavailable for the selected language.
+							</p>
+						)}
+
+						{createAudioMutation.error ? (
+							<ErrorState message={createAudioMutation.error.message} />
+						) : null}
+					</div>
+				</div> */}
 			</div>
 		</Page>
 	);

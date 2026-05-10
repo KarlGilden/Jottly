@@ -1,18 +1,5 @@
 @custom-variant dark (&:is(.dark *));
 
-.duolingo {
-	--color-primary: #8b7355;
-	--color-secondary: #f4f1ea;
-	--color-tertiary: #ffffff;
-
-	--color-primary-hover: #735f46;
-	--color-primary-soft: #a08b71;
-	--color-secondary-hover: #e6e0d4;
-	--color-secondary-strong: #d9ceb9;
-	--color-tertiary-hover: #f8f5ee;
-	--color-tertiary-strong: #efe8dc;
-}
-
 :root {
 	--font-primary: "Nunito", sans-serif;
 	--color-background: #f7f7f7;
@@ -37,16 +24,26 @@
 }
 
 .dark {
-	--color-primary: #f4f1ea;
-	--color-secondary: #8b7355;
-	--color-tertiary: #ffffff;
+	--font-primary: "Nunito", sans-serif;
+	--color-background: #222;
+	--color-background-strong: #111;
 
-	--color-primary-hover: #ffffff;
-	--color-primary-soft: #e6e0d4;
-	--color-secondary-hover: #a08b71;
-	--color-secondary-strong: #735f46;
-	--color-tertiary-hover: #f8f5ee;
-	--color-tertiary-strong: #efe8dc;
+	--color-forground-dark: #333;
+	--color-foreground: #444;
+
+	--color-primary: #58cc02;
+	--color-primary-light: #2364af;
+	--color-primary-dark: #052e5d;
+
+	--color-secondary: #1d8800;
+	--color-secondary-light: #1d8800;
+	--color-secondary-dark: #1d8800;
+
+	--color-main-text: #fff;
+	--color-sub-text: #e3e3e3;
+	--color-placeholder: oklch(87.2% 0.01 258.338);
+
+	--border-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 @theme inline {
